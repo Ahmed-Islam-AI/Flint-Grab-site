@@ -1,0 +1,54 @@
+/* Ink & Signal — the palette Flintgrab's app and extension already use, lifted verbatim from
+   DESIGN.md §3.2 so the site and the product read as one thing.
+
+   This is the only file with hex values in it. If you are changing a colour, change it here. */
+
+:root {
+  /* Surfaces */
+  --canvas: #08090c;
+  --surface: #0e1014;
+  --surface-raised: #14171d;
+  --surface-hover: #191d25;
+  --surface-active: #21262f;
+
+  /* Structure — hairlines, not cards */
+  --hairline: #1a1e26;
+  --border: #2a303b;
+
+  /* Text — never pure white */
+  --text-primary: #f0f2f5;
+  --text-secondary: #949caa;
+  --text-tertiary: #59616e;
+
+  /* One accent, the colour of a struck spark */
+  --accent: #a8e84d;
+  --accent-hover: #b8f065;
+  --accent-pressed: #94d43a;
+  --accent-ink: #0d1505;
+  --accent-wash: rgb(168 232 77 / 0.1);
+  --accent-ring: rgb(168 232 77 / 0.35);
+
+  /* States, for the queue demo */
+  --state-done: #6e7b8a;
+  --state-paused: #d9a441;
+  --state-failed: #e5544b;
+  --state-queued: #4a525e;
+
+  /* Type. Web scale runs larger than the app's 13px desktop scale — DESIGN.md §4.2 says so. */
+  --font-ui: 'Satoshi', -apple-system, 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  /* Rhythm */
+  --rail-width: 72px;
+  --page-max: 1120px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  /* Motion. Marketing pages get more than the app's restrained 3/10 — DESIGN.md §1.1 scopes that
+     restraint to scannable data, and names marketing sites as the exception. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  color-scheme: dark;
+}

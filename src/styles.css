@@ -1,0 +1,138 @@
+@import 'tailwindcss';
+
+/* Ink & Signal — lifted verbatim from the app's DESIGN.md §3.2 so the site and the product read as
+   one thing. This is the only file in the project with hex values in it. A `#` in a .tsx is a bug. */
+
+@theme {
+  --color-canvas: #08090c;
+  --color-surface: #0e1014;
+  --color-raised: #14171d;
+  --color-hover: #191d25;
+  --color-active: #21262f;
+
+  /* Structure comes from hairlines, not cards. */
+  --color-hairline: #1a1e26;
+  --color-edge: #2a303b;
+
+  /* Never pure white. */
+  --color-ink: #f0f2f5;
+  --color-muted: #949caa;
+  --color-faint: #59616e;
+
+  /* One accent, the colour of a struck spark. It means *live* — nothing static may wear it. */
+  --color-spark: #a8e84d;
+  --color-spark-hover: #b8f065;
+  --color-spark-ink: #0d1505;
+
+  /* Completed is grey, not green. Finished work should recede. */
+  --color-done: #6e7b8a;
+  --color-paused: #d9a441;
+  --color-failed: #e5544b;
+  --color-queued: #4a525e;
+
+  --font-ui: 'Satoshi', -apple-system, 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Set here as well as on body: anything that escapes body inheritance otherwise falls back to
+       the system stack, which is the "gave up on typography" default. */
+    font-family: var(--font-ui);
+  }
+
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-ui);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-spark);
+    color: var(--color-spark-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-spark);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer utilities {
+  /* Every mutating numeral is tabular, or a speed counter going 11.8 MB/s to 8.03 MB/s changes
+     width and the eye reads the twitch as flicker. */
+  .tnum {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  .display {
+    letter-spacing: -0.03em;
+    line-height: 0.92;
+    font-weight: 600;
+  }
+
+  .rule {
+    border-color: var(--color-hairline);
+  }
+}
+
+@keyframes sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(320%);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.sweep {
+  animation: sweep 1.4s var(--ease-out) infinite;
+}
+
+.drift {
+  animation: drift 48s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .sweep,
+  .drift {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

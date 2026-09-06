@@ -1,0 +1,887 @@
+/* Layout, components and motion. Colours live in tokens.css — no hex values below this line. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+figure {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Every mutating numeral is monospaced and tabular so nothing twitches — DESIGN.md §2.1. */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.lede {
+  max-width: 58ch;
+  color: var(--text-secondary);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+/* ── The spine ─────────────────────────────────────────────────────────────────────────────────
+   A download progress track running the height of the document. The fill and the packet share one
+   --progress value written by scroll.js, and both move on transform only. */
+
+.page {
+  position: relative;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(24px + var(--rail-width) / 2);
+  width: 2px;
+  background: var(--hairline);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.rail-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleY(var(--progress, 0));
+  transform-origin: top center;
+  will-change: transform;
+}
+
+.rail-packet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  background: var(--accent);
+  border-radius: 3px;
+  transform: translateY(var(--packet-y, 0)) rotate(45deg) scale(var(--packet-scale, 1));
+  box-shadow: 0 0 0 3px var(--accent-wash);
+  will-change: transform;
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────────────────────────── */
+
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in srgb, var(--canvas) 82%, transparent);
+  border-bottom: 1px solid transparent;
+  backdrop-filter: blur(12px);
+  transition: border-color 200ms var(--ease-out);
+}
+
+.masthead.scrolled {
+  border-bottom-color: var(--hairline);
+}
+
+.masthead-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 14px 24px;
+}
+
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* The mark, inlined as SVG so it inherits colour and never costs a request. Its viewBox is cropped
+   to the ink, so height alone controls it and the descender is included in that height. */
+.mark {
+  height: 17px;
+  width: auto;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.mark.sm {
+  height: 14px;
+}
+
+.masthead nav {
+  display: flex;
+  gap: 24px;
+  margin-left: auto;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.masthead nav a {
+  transition: color 140ms var(--ease-out);
+}
+
+.masthead nav a:hover {
+  color: var(--text-primary);
+}
+
+/* ── Sections ─────────────────────────────────────────────────────────────────────────────────── */
+
+section {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--rail-width) minmax(0, 1fr);
+  z-index: 1;
+}
+
+.node {
+  position: relative;
+}
+
+/* The dot the packet passes. Fills as the section arrives. */
+.node::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: calc(var(--rail-width) / 2 - 5px);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--canvas);
+  box-shadow: inset 0 0 0 2px var(--surface-active);
+  transition:
+    box-shadow 400ms var(--ease-out),
+    background 400ms var(--ease-out);
+}
+
+section.lit .node::before {
+  background: var(--accent);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.body {
+  padding: 0 0 120px;
+}
+
+.step {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.step-index {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+h2 {
+  font-size: clamp(26px, 3.4vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────────────────────────────────── */
+
+.hero .body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 40px;
+  align-items: center;
+  padding: clamp(48px, 9vh, 96px) 0 120px;
+}
+
+h1 {
+  font-size: clamp(38px, 6.2vw, 68px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+}
+
+h1 .dim {
+  color: var(--text-tertiary);
+}
+
+.hero .lede {
+  margin-top: 22px;
+}
+
+.hero-mark {
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+}
+
+.hero-mark canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Shown only when WebGL is unavailable or three.js fails to load. */
+.mark-fallback {
+  position: absolute;
+  inset: 0;
+  display: none;
+  place-items: center;
+}
+
+.hero-mark.no-webgl .mark-fallback {
+  display: grid;
+}
+
+.hero-mark.no-webgl canvas {
+  display: none;
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────────────────────────── */
+
+.cta-group {
+  margin-top: 34px;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  transition:
+    background 140ms var(--ease-out),
+    transform 140ms var(--ease-out);
+}
+
+.cta:hover {
+  background: var(--accent-hover);
+}
+
+.cta:active {
+  background: var(--accent-pressed);
+  transform: translateY(1px);
+}
+
+.cta svg {
+  flex-shrink: 0;
+}
+
+.cta-meta {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.cta-meta .num {
+  color: var(--text-secondary);
+}
+
+/* ── Screenshot on a plane ────────────────────────────────────────────────────────────────────── */
+
+.shot {
+  margin-top: 36px;
+  perspective: 1800px;
+}
+
+.shot-inner {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  transform: rotateX(16deg) rotateZ(-1.2deg) scale(0.94);
+  transform-origin: 50% 0;
+  opacity: 0;
+  transition:
+    transform 1100ms var(--ease-out),
+    opacity 700ms var(--ease-out);
+}
+
+section.lit .shot-inner {
+  transform: rotateX(0deg) rotateZ(0deg) scale(1);
+  opacity: 1;
+}
+
+.shot-caption {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* ── Segment demo ─────────────────────────────────────────────────────────────────────────────── */
+
+.demo {
+  margin-top: 36px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.demo-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.demo-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.demo-stat {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: right;
+}
+
+.demo-stat.pct {
+  width: 5.5ch;
+  color: var(--text-primary);
+}
+
+.demo-stat.speed {
+  width: 10ch;
+  color: var(--accent);
+}
+
+.demo-stat.eta {
+  width: 9ch;
+}
+
+.demo-segments {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+  padding: 18px 20px;
+}
+
+.seg {
+  height: 34px;
+  border-radius: 3px;
+  background: var(--surface-active);
+  overflow: hidden;
+}
+
+.seg > i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(var(--fill, 0));
+  transform-origin: left center;
+}
+
+.demo-legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 20px 18px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* ── Platform glyphs ──────────────────────────────────────────────────────────────────────────── */
+
+.glyphs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.glyph {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 15px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition:
+    border-color 160ms var(--ease-out),
+    color 160ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+
+.glyph:hover {
+  border-color: var(--border);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+/* Monochrome always — DESIGN.md §8.2 bans full-colour brand marks. */
+.glyph svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+}
+
+/* ── Extension popup, rebuilt from its own stylesheet ─────────────────────────────────────────── */
+
+.popup-demo {
+  width: 340px;
+  margin-top: 36px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--canvas);
+  overflow: hidden;
+  font-size: 13px;
+  box-shadow: 0 16px 48px rgb(0 0 0 / 0.44);
+}
+
+.popup-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--hairline);
+  background: var(--surface);
+}
+
+.popup-bar .name {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.popup-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.popup-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.popup-main {
+  padding: 12px;
+}
+
+.popup-title {
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.popup-sub {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.popup-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 34px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 7px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.popup-ladder {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.popup-quality {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 9px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: 12px;
+}
+
+.popup-quality .size {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+/* ── Trust list ───────────────────────────────────────────────────────────────────────────────── */
+
+.wont {
+  margin-top: 32px;
+  border-top: 1px solid var(--hairline);
+}
+
+.wont li {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.wont .mark-no {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  color: var(--accent);
+}
+
+.wont strong {
+  display: block;
+  font-weight: 550;
+}
+
+.wont span {
+  display: block;
+  margin-top: 3px;
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+/* ── Download block ───────────────────────────────────────────────────────────────────────────── */
+
+.get {
+  margin-top: 36px;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.get-price {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--accent-wash);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.get h2 {
+  margin: 16px 0 10px;
+}
+
+.checksum {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid var(--hairline);
+  font-size: 13px;
+  color: var(--text-tertiary);
+  line-height: 1.7;
+}
+
+.checksum code {
+  display: block;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--canvas);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.warn {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-left: 2px solid var(--state-paused);
+  background: var(--surface-raised);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────────────────────────────── */
+
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--hairline);
+  background: var(--surface);
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 32px 24px;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.footer-inner nav {
+  display: flex;
+  gap: 20px;
+  margin-left: auto;
+}
+
+.footer-inner a:hover {
+  color: var(--text-primary);
+}
+
+/* ── Legal pages ──────────────────────────────────────────────────────────────────────────────── */
+
+.doc {
+  max-width: 68ch;
+  margin: 0 auto;
+  padding: 72px 24px 120px;
+}
+
+.doc h1 {
+  font-size: clamp(30px, 4.6vw, 42px);
+}
+
+.doc h2 {
+  margin: 44px 0 12px;
+  font-size: 20px;
+}
+
+.doc p,
+.doc li {
+  margin-top: 14px;
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.doc ul {
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.doc .updated {
+  margin-top: 10px;
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+
+.doc strong {
+  color: var(--text-primary);
+  font-weight: 550;
+}
+
+/* ── Reveal ───────────────────────────────────────────────────────────────────────────────────── */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out);
+}
+
+section.lit .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+section.lit .reveal:nth-child(2) {
+  transition-delay: 70ms;
+}
+
+section.lit .reveal:nth-child(3) {
+  transition-delay: 140ms;
+}
+
+/* ── Focus ────────────────────────────────────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  :root {
+    --rail-width: 40px;
+  }
+
+  .hero .body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding-top: clamp(28px, 5vh, 56px);
+  }
+
+  .hero-mark {
+    order: -1;
+    max-width: 148px;
+  }
+
+  .demo-segments {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .demo-stat.eta {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  body {
+    font-size: 15px;
+  }
+
+  .page {
+    padding: 0 16px;
+  }
+
+  .rail {
+    left: calc(16px + var(--rail-width) / 2);
+  }
+
+  .body {
+    padding-bottom: 88px;
+  }
+
+  .popup-demo {
+    width: 100%;
+  }
+
+  .get {
+    padding: 22px;
+  }
+
+  .hero-mark {
+    max-width: 116px;
+  }
+
+  /* The nav wraps onto two lines at this width and collides with the wordmark. The page is one
+     scroll, so section links earn nothing here — only the action does. */
+  .masthead nav a:not(:last-child) {
+    display: none;
+  }
+
+  .masthead nav a:last-child {
+    color: var(--accent);
+    font-weight: 600;
+  }
+}
+
+/* ── Reduced motion ───────────────────────────────────────────────────────────────────────────
+   The spine reads as complete, the packet is removed, and nothing translates. The page still
+   communicates the same thing — it just does not move to say it. */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .rail-fill {
+    transform: none;
+  }
+
+  .rail-packet {
+    display: none;
+  }
+
+  .reveal,
+  .shot-inner {
+    opacity: 1;
+    transform: none;
+  }
+}
