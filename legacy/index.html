@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Flintgrab — paste a link, get the file</title>
+    <meta
+      name="description"
+      content="A Windows download manager that handles social video, because those aren't files — they're streaming manifests. Segmented transfers, pause and resume, and a browser extension that hands off your session."
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Flintgrab — paste a link, get the file" />
+    <meta
+      property="og:description"
+      content="A Windows download manager that handles social video. Free while in beta."
+    />
+    <meta property="og:url" content="https://flintgrab.com/" />
+    <meta property="og:image" content="https://flintgrab.com/assets/icons/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
+
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,600,700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/site.css" />
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js"
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <header class="masthead">
+      <div class="masthead-inner">
+        <a href="/" class="wordmark">
+          <svg class="mark" viewBox="12 6 43 56" fill="currentColor" aria-hidden="true"><path d="M12 6L55 6L47 20L28 20L28 28L48 28L41 41L28 41L28 51L20 62L12 51Z"/></svg>
+          Flintgrab
+        </a>
+        <nav>
+          <a href="#how">How it works</a>
+          <a href="#trust">What it won't do</a>
+          <a href="#get">Download</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="page">
+      <div class="rail">
+        <div class="rail-fill"></div>
+        <div class="rail-packet"></div>
+      </div>
+
+      <!-- ── Hero ────────────────────────────────────────────────────────────────────────────── -->
+      <section class="hero lit">
+        <div class="node"></div>
+        <div class="body">
+          <div>
+            <h1>Paste a link.<br /><span class="dim">Get the file.</span></h1>
+            <p class="lede">
+              Your download manager can't touch social video, and it isn't its fault — those aren't
+              files sitting on a server, they're streaming manifests assembled in the browser.
+              Flintgrab reads the manifest, pulls every piece in parallel, and hands you one finished
+              file.
+            </p>
+
+            <div class="cta-group">
+              <a class="cta" data-download href="#get" download>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 3v12" />
+                  <path d="m7 11 5 5 5-5" />
+                  <path d="M4 20h16" />
+                </svg>
+                Download for Windows
+              </a>
+              <p class="cta-meta">
+                Version <span class="num" data-release="version"></span> ·
+                <span class="num" data-release="size"></span> ·
+                <span data-release="requires"></span>
+              </p>
+            </div>
+          </div>
+
+          <div class="hero-mark">
+            <canvas aria-hidden="true"></canvas>
+            <div class="mark-fallback">
+              <svg width="150" height="196" viewBox="12 6 43 56" fill="var(--accent)" aria-hidden="true">
+                <path d="M12 6L55 6L47 20L28 20L28 28L48 28L41 41L28 41L28 51L20 62L12 51Z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 01 ──────────────────────────────────────────────────────────────────────────────── -->
+      <section id="how">
+        <div class="node"></div>
+        <div class="body">
+          <div class="reveal">
+            <div class="step">
+              <span class="step-index">01</span>
+              <span class="eyebrow">Paste</span>
+            </div>
+            <h2>One box takes anything</h2>
+            <p class="lede">
+              A video page, a playlist, a direct file link, a magnet link. Flintgrab works out what
+              it is looking at and shows you every quality it can actually reach — with real file
+              sizes — before a single byte moves.
+            </p>
+          </div>
+
+          <figure class="shot reveal">
+            <div class="shot-inner">
+              <img
+                src="assets/screens/queue.png"
+                alt="The Flintgrab queue with several downloads in progress, showing speed, percentage and time remaining for each"
+                width="1280"
+                height="800"
+              />
+            </div>
+            <figcaption class="shot-caption">The queue, mid-transfer. No mockup — this is the app.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ── 02 ──────────────────────────────────────────────────────────────────────────────── -->
+      <section>
+        <div class="node"></div>
+        <div class="body">
+          <div class="reveal">
+            <div class="step">
+              <span class="step-index">02</span>
+              <span class="eyebrow">Split</span>
+            </div>
+            <h2>It arrives in eight pieces at once</h2>
+            <p class="lede">
+              A single connection leaves most of your bandwidth idle. Flintgrab opens several at
+              once, each pulling a different byte range of the same file, then stitches them back
+              together and checks the size before it will call anything finished.
+            </p>
+          </div>
+
+          <div class="demo reveal">
+            <div class="demo-row">
+              <span class="demo-title">Blender Foundation — Sintel (2010), 1080p</span>
+              <span class="demo-stat pct" data-demo="pct">0.0%</span>
+              <span class="demo-stat speed" data-demo="speed">—</span>
+              <span class="demo-stat eta" data-demo="eta">—</span>
+            </div>
+            <div class="demo-segments">
+              <span class="seg"><i></i></span>
+              <span class="seg"><i></i></span>
+              <span class="seg"><i></i></span>
+              <span class="seg"><i></i></span>
+              <span class="seg"><i></i></span>
+              <span class="seg"><i></i></span>
+              <span class="seg"><i></i></span>
+              <span class="seg"><i></i></span>
+            </div>
+            <div class="demo-legend">
+              <span>8 connections · 847 MB</span>
+              <span>Pause and close the app — it picks up from the same byte</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 03 ──────────────────────────────────────────────────────────────────────────────── -->
+      <section>
+        <div class="node"></div>
+        <div class="body">
+          <div class="reveal">
+            <div class="step">
+              <span class="step-index">03</span>
+              <span class="eyebrow">Everywhere</span>
+            </div>
+            <h2>The sites change. So does Flintgrab.</h2>
+            <p class="lede">
+              Extraction runs on yt-dlp, which maintains extractors for over a thousand sites. That
+              matters more than the count: sites change how they serve video constantly, and a
+              downloader that ships its extractors once is quietly broken a month later. Flintgrab
+              updates its copy in the background.
+            </p>
+
+            <div class="glyphs">
+              <span class="glyph">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 7.5a3 3 0 0 0-2.1-2.1C19 4.8 12 4.8 12 4.8s-7 0-8.9.6A3 3 0 0 0 1 7.5 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.5a3 3 0 0 0 2.1 2.1c1.9.6 8.9.6 8.9.6s7 0 8.9-.6a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.5 31 31 0 0 0-.5-4.5zM9.8 15.3V8.7l5.8 3.3z"/></svg>
+                YouTube
+              </span>
+              <span class="glyph">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.3l-4.9-6.4L6.2 22H3l7.3-8.3L2.4 2h6.4l4.4 5.9zm-1.1 18h1.7L7.3 3.8H5.5z"/></svg>
+                X
+              </span>
+              <span class="glyph">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2-.1-1.3-.1-1.7-.1-4.9s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.9-.1zm0 3.9a5.9 5.9 0 1 0 0 11.8 5.9 5.9 0 0 0 0-11.8zm0 9.7a3.8 3.8 0 1 1 0-7.6 3.8 3.8 0 0 1 0 7.6zm7.5-9.9a1.4 1.4 0 1 1-2.8 0 1.4 1.4 0 0 1 2.8 0z"/></svg>
+                Instagram
+              </span>
+              <span class="glyph">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.8a4.9 4.9 0 0 1-1.1-3.2h-3.3v13.2a2.8 2.8 0 1 1-2-2.7V9.7a6.1 6.1 0 1 0 5.3 6V9.1a8.2 8.2 0 0 0 4.8 1.5V7.3a4.8 4.8 0 0 1-3.7-1.5z"/></svg>
+                TikTok
+              </span>
+              <span class="glyph">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a2 2 0 0 0-3.4-1.4 9.8 9.8 0 0 0-5.3-1.7l.9-4.2 2.9.6a1.5 1.5 0 1 0 .2-1.1l-3.3-.7a.5.5 0 0 0-.6.4l-1 4.9a9.8 9.8 0 0 0-5.4 1.7A2 2 0 1 0 4.5 14a4 4 0 0 0 0 .6c0 3.1 3.4 5.6 7.5 5.6s7.5-2.5 7.5-5.6a4 4 0 0 0 0-.6A2 2 0 0 0 22 12zM8 13.5a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm7.9 3.9a4.9 4.9 0 0 1-3.9 1.3 4.9 4.9 0 0 1-3.9-1.3.4.4 0 0 1 .6-.6 4.2 4.2 0 0 0 3.3 1 4.2 4.2 0 0 0 3.3-1 .4.4 0 1 1 .6.6zm-.4-2.4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+                Reddit
+              </span>
+              <span class="glyph">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>
+                Facebook
+              </span>
+              <span class="glyph">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.3 2 2.5 6.5v14.2h4.9V24h2.7l2.7-3.3h4l5.2-5.2V2zm15.6 12.5-3 3h-4.9l-2.6 2.6v-2.6H5.7V4h14.2z"/><path d="M17 7.1h-1.8v5.3H17zm-4.9 0h-1.8v5.3h1.8z"/></svg>
+                Twitch
+              </span>
+              <span class="glyph">and a thousand more</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── 04 ──────────────────────────────────────────────────────────────────────────────── -->
+      <section>
+        <div class="node"></div>
+        <div class="body">
+          <div class="reveal">
+            <div class="step">
+              <span class="step-index">04</span>
+              <span class="eyebrow">In the browser</span>
+            </div>
+            <h2>One click on the page you're already on</h2>
+            <p class="lede">
+              The extension puts a download button on video pages and hands the page's own session to
+              the app, so anything you can watch while signed in is something you can save. Those
+              cookies stay in memory, scoped to that one download, and are never written to disk.
+            </p>
+          </div>
+
+          <div class="popup-demo reveal">
+            <div class="popup-bar">
+              <svg class="mark sm" viewBox="12 6 43 56" fill="currentColor" aria-hidden="true"><path d="M12 6L55 6L47 20L28 20L28 28L48 28L41 41L28 41L28 51L20 62L12 51Z"/></svg>
+              <span class="name">Flintgrab</span>
+              <span class="popup-status">Connected · 0.1.0</span>
+            </div>
+            <div class="popup-main">
+              <div class="popup-title">Sintel — Blender Open Movie</div>
+              <div class="popup-sub">YouTube · 14:48</div>
+              <button class="popup-primary" type="button" disabled>Download 1080p · 847 MB</button>
+              <div class="popup-ladder">
+                <span class="popup-quality">1440p<span class="size">1.6 GB</span></span>
+                <span class="popup-quality">720p<span class="size">402 MB</span></span>
+                <span class="popup-quality">480p<span class="size">218 MB</span></span>
+                <span class="popup-quality">Audio only<span class="size">41 MB</span></span>
+              </div>
+            </div>
+          </div>
+          <p class="shot-caption reveal">The extension panel, built from the same stylesheet the real one uses.</p>
+        </div>
+      </section>
+
+      <!-- ── 05 ──────────────────────────────────────────────────────────────────────────────── -->
+      <section id="trust">
+        <div class="node"></div>
+        <div class="body">
+          <div class="reveal">
+            <div class="step">
+              <span class="step-index">05</span>
+              <span class="eyebrow">The deal</span>
+            </div>
+            <h2>What it won't do</h2>
+            <p class="lede">
+              This category is full of software that treats the download as an excuse to install
+              something else. Here is what Flintgrab does not do, written down so you can hold it to
+              them.
+            </p>
+          </div>
+
+          <ul class="wont reveal">
+            <li>
+              <svg class="mark-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14" /></svg>
+              <div>
+                <strong>No ads, no bundled offers, no changed search engine</strong>
+                <span>The installer installs one thing. Nothing is opt-out.</span>
+              </div>
+            </li>
+            <li>
+              <svg class="mark-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14" /></svg>
+              <div>
+                <strong>No account, no sign-up, no email required</strong>
+                <span>Install it and use it. There is nothing to register.</span>
+              </div>
+            </li>
+            <li>
+              <svg class="mark-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14" /></svg>
+              <div>
+                <strong>Nothing is routed through a server</strong>
+                <span>Every byte moves between your machine and the source. There is no middle.</span>
+              </div>
+            </li>
+            <li>
+              <svg class="mark-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14" /></svg>
+              <div>
+                <strong>No telemetry, no analytics, no crash reporting</strong>
+                <span>Not off by default — absent. There is no setting to turn any on, because there is nothing to turn on.</span>
+              </div>
+            </li>
+            <li>
+              <svg class="mark-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14" /></svg>
+              <div>
+                <strong>Uninstalling does not touch your files</strong>
+                <span>Your downloads stay where they are. It asks before removing its own history.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ── Get ─────────────────────────────────────────────────────────────────────────────── -->
+      <section id="get">
+        <div class="node"></div>
+        <div class="body">
+          <div class="get reveal">
+            <span class="get-price">Free while in beta</span>
+            <h2>Download Flintgrab</h2>
+            <p class="lede">
+              Free while it's in beta. Paid plans come later, and this page will say so before they
+              arrive rather than after.
+            </p>
+
+            <div class="cta-group">
+              <a class="cta" data-download href="#" download>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 3v12" />
+                  <path d="m7 11 5 5 5-5" />
+                  <path d="M4 20h16" />
+                </svg>
+                Download for Windows
+              </a>
+              <p class="cta-meta">
+                Version <span class="num" data-release="version"></span> ·
+                <span class="num" data-release="size"></span> ·
+                <span data-release="requires"></span>
+              </p>
+            </div>
+
+            <div class="warn" data-unsigned-only>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink: 0; margin-top: 2px" aria-hidden="true">
+                <path d="M12 8v5" />
+                <path d="M12 16.5v.01" />
+                <path d="M10.3 3.9 2.4 17.5A1.9 1.9 0 0 0 4 20.4h16a1.9 1.9 0 0 0 1.6-2.9L13.7 3.9a1.9 1.9 0 0 0-3.4 0z" />
+              </svg>
+              <div>
+                This build isn't code-signed yet, so Windows SmartScreen will warn you before it
+                runs — you'll need <strong>More info → Run anyway</strong>. Rather than ask you to
+                take that on faith, the checksum below is published so you can verify the file is the
+                one that was built.
+              </div>
+            </div>
+
+            <div class="checksum">
+              SHA-256 of <span class="num">Flintgrab-Setup-<span data-release="version"></span>.exe</span>
+              <code data-release="sha256"></code>
+              Verify with <span class="num">certutil -hashfile &lt;file&gt; SHA256</span> in any terminal.
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <div class="footer-inner">
+        <span>Flintgrab · Windows 10 and 11</span>
+        <nav>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a data-contact href="#">contact</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script type="module">
+      import { applyRelease } from './js/config.js'
+      applyRelease()
+
+      // A missing screenshot should read as "no screenshot" rather than as a broken page. Module
+      // scripts are deferred, so an image that already failed will never fire its error event —
+      // the loaded-but-zero-width check is the one that actually catches it.
+      for (const img of document.querySelectorAll('.shot img')) {
+        const drop = () => img.closest('.shot')?.remove()
+        if (img.complete && img.naturalWidth === 0) drop()
+        else img.addEventListener('error', drop, { once: true })
+      }
+    </script>
+    <script type="module" src="js/scroll.js"></script>
+    <script type="module" src="js/demo.js"></script>
+    <script type="module" src="js/mark.js"></script>
+  </body>
+</html>
