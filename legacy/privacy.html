@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy policy — Flintgrab</title>
+    <meta
+      name="description"
+      content="What Flintgrab and its browser extension do with your data. Short version: it stays on your machine."
+    />
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=satoshi@400,500,600,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/site.css" />
+  </head>
+
+  <body>
+    <header class="masthead scrolled">
+      <div class="masthead-inner">
+        <a href="index.html" class="wordmark">
+          <svg class="mark" viewBox="12 6 43 56" fill="currentColor" aria-hidden="true"><path d="M12 6L55 6L47 20L28 20L28 28L48 28L41 41L28 41L28 51L20 62L12 51Z"/></svg>
+          Flintgrab
+        </a>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="terms.html">Terms</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="doc">
+      <h1>Privacy policy</h1>
+      <p class="updated">Last updated 28 August 2026 · applies to the Flintgrab desktop application and the Flintgrab browser extension.</p>
+
+      <h2>The short version</h2>
+      <p>
+        Flintgrab runs entirely on your computer. There is no Flintgrab server, no account, and no
+        analytics. We do not collect, receive, store, or transmit your personal data, because there
+        is nowhere for it to go.
+      </p>
+
+      <h2>What stays on your machine</h2>
+      <p>The application stores the following locally, in your Windows user profile, and nowhere else:</p>
+      <ul>
+        <li>Your download history — the URL, title, file size, destination path, and state of each download.</li>
+        <li>Your settings — download folder, connection limits, speed limits, and similar preferences.</li>
+        <li>The files you download.</li>
+        <li>Application logs, used for diagnosing problems. Cookie values, <strong>Authorization</strong> headers and signed-URL parameters are filtered out of logs before they are written.</li>
+      </ul>
+      <p>
+        You can clear the history, revoke stored browser sessions, and reset all settings from
+        <strong>Settings → Privacy</strong> inside the app. Uninstalling asks whether to remove this
+        data and never removes the files you downloaded.
+      </p>
+
+      <h2>Cookies and browser sessions</h2>
+      <p>
+        This is the part that matters most, so it is written out in full.
+      </p>
+      <p>
+        When you start a download from the browser extension, the extension reads the cookies your
+        browser already holds for that page and sends them to the desktop application over Chrome's
+        native messaging channel — a direct local pipe between the extension and the app on the same
+        computer. It does not travel over the internet.
+      </p>
+      <p>The application then:</p>
+      <ul>
+        <li>Holds those cookies <strong>in memory only</strong>. They are never written to disk.</li>
+        <li>Attaches them to <strong>one specific download</strong>, not to your session generally, so they cannot be reused for a later download you did not start.</li>
+        <li>Discards them when that download finishes, fails, or is cancelled — and when the app quits, since memory does not survive it.</li>
+        <li>Re-checks that the cookies belong to the same site as the media being fetched, and drops them if they do not.</li>
+      </ul>
+      <p>
+        Those cookies are sent to the website you are downloading from, and to nobody else. That is
+        the same website your browser was already sending them to.
+        <strong>Settings → Privacy → Revoke all</strong> clears every held session immediately.
+      </p>
+
+      <h2>What the extension's permissions are for</h2>
+      <ul>
+        <li><strong>Cookies</strong> — to read your session for the page you are downloading from, as described above.</li>
+        <li><strong>Access to all sites</strong> — Flintgrab cannot know in advance which sites you will want to download from, so it cannot list them. The extension only acts on a page when you click its button or when a download you started matches your own interception rules.</li>
+        <li><strong>Downloads</strong> — to notice a download your browser is starting so it can be handed to Flintgrab instead, if you have enabled that.</li>
+        <li><strong>Native messaging</strong> — to talk to the desktop application on your computer.</li>
+        <li><strong>Storage</strong> — to remember your extension settings.</li>
+        <li><strong>Tabs</strong> — to know the address of the page you are currently looking at when you open the panel.</li>
+        <li><strong>Alarms</strong> — to periodically re-check that the desktop application is still reachable.</li>
+      </ul>
+      <p>
+        The extension does not read page content for any purpose other than finding media on it, and
+        sends nothing to any server operated by us — there are none.
+      </p>
+
+      <h2>Network connections Flintgrab makes</h2>
+      <ul>
+        <li>
+          <strong>To the sites you download from.</strong> Direct, from your computer. Those sites see
+          your IP address and request headers exactly as they would if you had used your browser.
+          Nothing is proxied through us.
+        </li>
+        <li>
+          <strong>To fetch updates to its extraction tool.</strong> Video sites change how they serve
+          media constantly, so Flintgrab periodically downloads a new build of the open-source tool
+          it uses for extraction. That request reveals your IP address to whoever hosts that
+          download, and nothing about what you have downloaded.
+        </li>
+        <li>
+          <strong>To check for application updates.</strong> Same shape: a request for a version
+          number, revealing your IP address to the host and nothing else.
+        </li>
+      </ul>
+      <p>
+        For torrent transfers, BitTorrent works by connecting your computer directly to other peers.
+        Those peers can see your IP address. That is how the protocol works, not a Flintgrab
+        behaviour, and it is why peer discovery can be turned off in <strong>Settings</strong>.
+      </p>
+
+      <h2>Analytics and telemetry</h2>
+      <p>
+        There are none. Not disabled by default — not present. The application contains no analytics
+        library, no crash reporter, and no usage tracking, and there is no setting to enable any,
+        because there is nothing to enable.
+      </p>
+
+      <h2>Children</h2>
+      <p>
+        Flintgrab is not directed at children under 13 and collects no data from anyone, including
+        them.
+      </p>
+
+      <h2>Changes to this policy</h2>
+      <p>
+        If this policy changes in a way that affects what happens to your data, the change will be
+        dated here and noted in the application's release notes. A change that introduced any
+        collection of personal data would be announced before it shipped, not after.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this policy: <a data-contact href="#">contact</a>.
+      </p>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <span>Flintgrab · Windows 10 and 11</span>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="terms.html">Terms</a>
+          <a data-contact href="#">contact</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script type="module">
+      import { applyRelease } from './js/config.js'
+      applyRelease()
+    </script>
+  </body>
+</html>
