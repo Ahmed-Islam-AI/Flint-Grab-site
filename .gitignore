@@ -1,0 +1,23 @@
+node_modules/*
+dist/
+*.local
+.env
+.env.*
+!.env.example
+
+# Local tool + editor state
+.gstack/
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# 189MB installer — over GitHub's 100MB file limit. Ship via Releases/CDN.
+public/downloads/
+node_modules
+
+.wh
