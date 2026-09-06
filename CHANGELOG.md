@@ -1,13 +1,14 @@
-# Changelog
+# Changelog — website
 
-All notable changes to Flintgrab are recorded here.
+Notable changes to the Flintgrab **website**: the marketing pages, the download page, and the two
+legal documents.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
-Releases are cut with `npm run release` — see [.claude/skills/release/SKILL.md](.claude/skills/release/SKILL.md).
-Write what changed under **Unreleased** as you go; the release script moves it into a dated version
-section, stamps the installer, and pushes the new version through to the website.
+> **This file is not the application's changelog.** The app has its own in the Flintgrab repo, and
+> `npm run release` there copies it to `public/CHANGELOG.md` for the download page to render. Do not
+> record app changes here, and do not record site changes there.
 
 Categories: `Added` · `Changed` · `Fixed` · `Removed` · `Security`
 
@@ -15,65 +16,62 @@ Categories: `Added` · `Changed` · `Fixed` · `Removed` · `Security`
 
 ## [Unreleased]
 
-<!-- Add entries here as you work. The release script requires this section to be non-empty. -->
+<!-- Add entries here as you work. -->
 
 ---
 
-## [0.1.0] — 2026-08-28
+## [1.1.0] — 2026-09-07
 
-First packaged build. Windows 10 and 11, x64.
+Rewritten for the ad-supported free tier. **This release must go live before the application build
+that introduces adverts**, because the privacy policy commits to announcing new data collection
+before it ships rather than after.
+
+### Changed
+
+- **Privacy policy**, dated 7 September 2026 and rewritten in four places. The summary no longer
+  claims "There is no Flintgrab server, no account, and no analytics". The activation section no
+  longer claims "No part of it contacts a server" and instead describes what the licence check
+  sends, what the machine identifier is, and that a network failure never revokes a paid licence.
+  The network list gains the advert-manifest and count-reporting requests. The analytics section now
+  separates advert counts from usage tracking and states that unique users are deliberately not
+  measured.
+- **Privacy policy** gains an "About IP addresses" paragraph. An IP cannot be made to disappear, and
+  claiming otherwise would have been the one falsifiable statement on the page.
+- **Trust section**: "No ads, no bundled offers, no changed search engine" is replaced by "No ad
+  network, no third-party code, nothing outside the window", plus two new promises covering what
+  leaves the machine and what an advertiser can see. Eight promises now, all still phrased as
+  boundaries so they fit the "What it won't do" heading.
+- **Terms**: the clause saying Flintgrab "stops starting new downloads" when the trial ends was
+  already untrue against the shipped application and is now definitively wrong. Replaced with a
+  statement that nothing stops.
+- **Pricing section** rebuilt as two tiers, free and Pro, replacing the "Fifteen days, then ten
+  dollars" framing. The feature list sits below both cards rather than inside either, because it is
+  now genuinely identical for both.
+- **FAQ**: the trial-expiry answer was factually wrong and is corrected. The "no server of ours for
+  it to reach" answer is narrowed to the extension, which still has no network connection to us.
+- Meta descriptions: `og:description` no longer sells "Fifteen days free, then $10 once", and the
+  privacy page no longer describes our data handling as "which is nothing".
 
 ### Added
 
-- Paste-a-link downloading — a single input that accepts a video page, a playlist, a direct file
-  link, or a magnet link, and works out which it is before any bytes move.
-- Segmented HTTP transport with byte-exact pause, resume, and crash recovery. Segments write
-  straight to their own offset in a pre-allocated file, so there is no merge pass.
-- Dynamic segment re-splitting — an idle worker takes half of the slowest remaining range, which
-  removes the "stuck at 99%" tail.
-- Adaptive stream handling for HLS and DASH, muxed with stream copy. Merging is its own visible
-  state, so nothing reads as finished while it is still being assembled.
-- Curated quality ladder — yt-dlp's fifty-three formats for a YouTube video reduced to one row per
-  resolution, each with a size corrected for the audio track it will be merged with.
-- Audio extraction to MP3, M4A and Opus, with ID3 tags, embedded cover art, and the source URL
-  written into the comment field.
-- Subtitle downloads as sidecar files or soft-embedded tracks, with auto-generated tracks labelled
-  as such. A subtitle failure never fails the video it belongs to.
-- Playlist and batch downloading, capped at 500 items, with per-item failure isolated from the rest
-  of the batch and a retry action for what failed.
-- Queue with scheduling, a global speed limit, per-host connection caps, and a post-completion
-  action.
-- Searchable history that detects a file which has since been moved or deleted.
-- Clipboard detection — copying a link anywhere raises a non-modal toast that never steals focus
-  and never starts a download on its own.
-- Browser extension for Chrome, Edge and Brave: an in-page badge on every video, a toolbar popup
-  with the quality ladder, media sniffing that catches `blob:` streams the address bar never shows,
-  and a cookie bridge that hands the page's own session to the app.
-- Download interception with a rules engine — domain and extension lists plus a size floor,
-  evaluated in the app rather than the extension. Ships off by default.
-- Torrent and magnet support through the same queue, with seeding controls and an explicit choice
-  on the first torrent rather than a silent default.
-- FTP, FTPS and SFTP transfers with byte-exact resume, and trust-on-first-use host-key pinning.
-- yt-dlp auto-update — checked on startup and every 24 hours, verified by checksum, and self-tested
-  against a known-good URL before it is promoted.
-- Tray operation with aggregate progress drawn into the icon. Closing the window never cancels a
-  transfer.
-- Native Windows notifications on completion and on terminal failure.
+- **Terms** gain an "Advertising in the free version" section, which commits in writing to never
+  running adverts for system cleaners, driver updaters, antivirus software, cryptocurrency,
+  gambling, adult content, or competing download managers.
+- **Terms** gain a refund clause noting that a revoked key stops working within about a week, and
+  that the application continues as the free version rather than being disabled.
+- **FAQ** gains two questions answered directly rather than buried at the bottom: whether there are
+  adverts now, and what an advertiser learns about the reader.
 
-### Security
+---
 
-- Cookies are held in memory, scoped to a single download, and discarded when it reaches a terminal
-  state. Optional persistence is DPAPI-encrypted and capped at 24 hours.
-- Credentials, `Authorization` headers and signed-URL parameters are redacted by a filter at the
-  logger, not by remembering to redact them.
-- Every subprocess is spawned with an argument array, so a URL containing shell metacharacters is
-  inert by construction.
-- The renderer never touches disk, network, or the database. Privileged IPC takes ids, never paths.
+## [1.0.0] — 2026-08-28
 
-### Known limitations
+Initial public site, published alongside Flintgrab 0.1.0.
 
-- The installer is not code-signed, so Windows SmartScreen warns before it runs. The SHA-256 is
-  published so the file can be verified instead.
-- Live streams are refused before a download starts.
-- DRM-protected services are not supported, and no version will add that.
-- Dark theme only — the light palette is defined but not reachable.
+### Added
+
+- Landing page: hero, the problem, segmented transfers, an application tour, the browser extension,
+  the quality ladder, pricing, the trust list, an FAQ, and the download panel.
+- Download page driven by a generated `RELEASE` block in `src/config.ts`, carrying the version,
+  date, size and SHA-256 of the installer so the file can be verified before it is run.
+- Privacy policy and terms of use as separately routed pages.
