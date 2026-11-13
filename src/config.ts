@@ -3,8 +3,11 @@
 // The RELEASE block below is rewritten by `npm run release` in the app repo — it stamps the
 // version, size and checksum of the installer it just built. Edit the values above it by hand.
 
+// DOMAIN is only read by privacy.tsx, as the host the app fetches its advert list from. That has to
+// match the address built into the app, so it stays until that is confirmed. flintgrab.com is not
+// registered, so mail can't go there: the site is served at flintgrab.ahmedislam.tech.
 export const DOMAIN = 'flintgrab.com'
-export const CONTACT = `hello@${DOMAIN}`
+export const CONTACT = 'hello@ahmedislam.tech'
 
 export const PRICE = {
   amount: '$10',
@@ -18,7 +21,7 @@ export const PRICE = {
 export const RELEASE = {
   version: '0.1.0',
   date: '2026-08-28',
-  url: 'downloads/Flintgrab-Setup-0.1.0.exe',
+  url: 'https://github.com/Ahmed-Islam-AI/Flint-Grab-site/releases/download/v0.1.0/Flintgrab-Setup-0.1.0.exe',
   size: '180 MB',
   sha256: 'd30ea14dd08ed808dbf61e75a09fada183e320c4108b5c30695c4af62dea4778',
   requires: 'Windows 10 or 11, 64-bit',
